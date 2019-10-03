@@ -1,6 +1,8 @@
 from Stubs.ExceptionTypeValidator import ExceptionTypeValidator
 
-class ExceptionTypeValidatorFabric:
 
-    def create(self):
-        return 
+class ExceptionTypeValidatorFactory:
+
+    @staticmethod
+    def create():
+        return ExceptionTypeValidator()

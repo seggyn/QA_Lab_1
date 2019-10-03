@@ -47,9 +47,8 @@ class TestExceptionManager(unittest.TestCase):
         self.assertTrue(self.manager.CriticalExceptionCounter == 2)
         self.assertTrue(self.manager.NotCriticalExceptionCounter == 1)
 
-    def test_sender(self):
+    def test_sender_mock_called(self):
         mock = Mock()
-        mock.sendExceptionToServer.return_value = False
 
         self.manager = ExceptionManager(mock)
         self.manager.Verifier = CriticalVerifier()
@@ -57,6 +56,18 @@ class TestExceptionManager(unittest.TestCase):
         self.manager.handle(ErrorInternetDisconnected)
         self.manager.handle(ErrorConnectionReset)
 
-        self.assertTrue(self.manager.ServerSendingErrorCounter == 2)
+        self.assertTrue(mock.sendExceptionToServer.called)
+
+    def test_sender_mock_call_counter(self):
+        mock = Mock()
+
+        self.manager = ExceptionManager(mock)
+        self.manager.Verifier = CriticalVerifier()
+
+        self.manager.handle(ErrorInternetDisconnected)
+        self.manager.handle(ErrorConnectionReset)
+        self.manager.handle(OSError)
+
+        self.assertTrue(mock.sendExceptionToServer.call_count == 3)
 
 
