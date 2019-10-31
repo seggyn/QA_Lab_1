@@ -4,7 +4,6 @@ import configparser
 
 class ExceptionManager:
 
-    ServerSendingErrorCounter = 0
     CriticalExceptionCounter = 0
     NotCriticalExceptionCounter = 0
     Verifier = None
@@ -33,7 +32,6 @@ class ExceptionManager:
         if self.isExceptionType(exception):
             if self.isCriticalException(exception):
                 self.CriticalExceptionCounter += 1
-                if not self.sendExceptionToServer(exception):
-                    self.ServerSendingErrorCounter += 1
+                self.Sender.sendExceptionToServer(exception)
             else:
                 self.NotCriticalExceptionCounter += 1
